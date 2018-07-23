@@ -1,0 +1,2 @@
+class WxUser < ApplicationRecord
+end

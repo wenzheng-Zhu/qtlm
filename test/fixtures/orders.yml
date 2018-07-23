@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  open_id: MyString
+  total_price: 9.99
+  sum_price: 9.99
+  stuff: MyText
+
+two:
+  open_id: MyString
+  total_price: 9.99
+  sum_price: 9.99
+  stuff: MyText

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  open_id: MyString
+  phone: MyString
+  member: false
+  bonus: 9.99
+
+two:
+  open_id: MyString
+  phone: MyString
+  member: false
+  bonus: 9.99
