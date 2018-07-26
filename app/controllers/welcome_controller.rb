@@ -16,7 +16,7 @@ class WelcomeController < ApplicationController
 	 	end
 
 
-    	access_token_value = AccessToken.last.value
+    	access_token_value = (AccessToken.last)&.value
 
     	open_id = params[:entry][:x_field_weixin_openid]
     	phone = params[:entry][:field_2]
