@@ -12,7 +12,7 @@
 
 
 
-server "47.92.1.46", user: "deploy", roles: %w{app db web}, my_property: :my_value
+server "212.64.11.106", user: "ubuntu", roles: %w{app db web}, my_property: :my_value
 
 set :ssh_options, {
   keys: %w(~/.ssh/id_rsa),

@@ -9,7 +9,7 @@ set :repo_url, "git@github.com:wenzheng-Zhu/qtlm.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
- set :deploy_to, "/var/yyy/qtlm"
+ set :deploy_to, "/var/www/qtlm"
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh

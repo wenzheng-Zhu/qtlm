@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'home/index'
   post 'callback' => 'welcome#make'
 
-  root 'welcome#make'
+  root 'home#index'
 end
