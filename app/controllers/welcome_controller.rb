@@ -34,7 +34,7 @@ class WelcomeController < ApplicationController
         	uri2 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
         	http2 = Net::HTTP.new(uri2.host, uri2.port)
         	http2.use_ssl = true
-        	data2 = { {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'扫码成为会员，有优惠哦， 满200减100'}}}.to_json
+        	data2 = { {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'be a member, having discount!'} } }.to_json
         	header = {'content-type'=>'application/json'}
         	http2.post(uri2, data2, header)
         	#推送会卡二维码，扫码加入会员
