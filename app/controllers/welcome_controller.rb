@@ -3,6 +3,8 @@ require 'json'
 
 class WelcomeController < ApplicationController
 
+    skip_before_action :verify_authenticity_token, only: [:fuck] 
+
     def make
 
     	#判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
