@@ -115,6 +115,7 @@ class WelcomeController < ApplicationController
         http4.use_ssl = true
         header = {'content-type'=>'application/json'}
         @test = http4.get(uri4, header).body.split("\"")[3]
+        return render json: {}, status: 200
         
     end
     
