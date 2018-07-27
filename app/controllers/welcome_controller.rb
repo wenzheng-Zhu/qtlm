@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
 
     skip_before_action :verify_authenticity_token, only: [:make] 
 
-    def make
+    def shixian
 
     	#判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
         arrwen = []
@@ -27,11 +27,12 @@ class WelcomeController < ApplicationController
     	stuff = params[:entry][:field_1]
         Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
 
-
+         
+ 
 
          #如果在rails里没保存过该用户
         if !(arrwen.include?false)
-
+               
         	#推送扫码加入会员消息，并带上会员卡会员优惠信息
         	uri2 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
         	http2 = Net::HTTP.new(uri2.host, uri2.port)
@@ -103,13 +104,11 @@ class WelcomeController < ApplicationController
         		end
         	end
 
-
         end
-    end
-
 
 
     
+    end
 end
 
 
