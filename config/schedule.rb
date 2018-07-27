@@ -18,15 +18,20 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+env :PATH, ENV['PATH']
+set :output, 'log/cron.log'
 
-set :environment, :development
-every 2.hours do  
-runner "AccessToken.gain"  
-end
 
-set :environment, :production
+# set :environment, :development
+# every 2.minutes do  
+# runner "AccessToken.gain"  
+# end
+
+# set :environment, :production
 every 2.minutes do  
 runner "AccessToken.gain"  
 end
+
+
 
 
