@@ -11,8 +11,9 @@ set :repo_url, "git@github.com:wenzheng-Zhu/qtlm.git"
 # Default deploy_to directory is /var/www/my_app_name
  set :deploy_to, "/var/www/qtlm"
 
- set :whenever_command, "bundle exec whenever"
- require "whenever/capistrano"
+  # set :whenever_command, "bundle exec whenever"
+  set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
