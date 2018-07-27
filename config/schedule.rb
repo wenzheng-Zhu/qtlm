@@ -25,7 +25,7 @@ runner "AccessToken.gain"
 end
 
 set :environment, :production
-every 2.hours do  
+every 2.minutes do  
 runner "AccessToken.gain"  
 end
 

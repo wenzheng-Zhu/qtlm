@@ -19,7 +19,7 @@ class WelcomeController < ApplicationController
 
 
     	access_token_value = (AccessToken.last)&.value
-
+        form_type = params[:form]
     	open_id = params[:entry][:x_field_weixin_openid]
     	phone = params[:entry][:field_2]
     	total_price = params[:entry][:total_price]
@@ -54,7 +54,7 @@ class WelcomeController < ApplicationController
 
         	#在rails里已经保存过该用户
         	#判断在微信公众号里是不是会员，如果从金数据那边推送过来的信息里有sum_price,说明该用户有tagid, 是会员，那么更新该用户在rails中的么 member属性为true，并且更新在微信后台里的会员卡积分
-        	if sum_price
+        	if form_type == "JojLsi"
 
         		wxuser = WxUser.find_by(open_id: open_id)
         		wxuser.update_attributes(bonus: wxuser.bonus + total_price, member: true)
