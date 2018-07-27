@@ -28,7 +28,7 @@ env :PATH, ENV['PATH']
 # end
 
 # set :environment, :production
-every 2.minutes do  
+every 2.hours do  
 runner "AccessToken.gain"  
 end
 
