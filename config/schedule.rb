@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 env :PATH, ENV['PATH']
-set :output, 'log/cron.log'
+# set :output, 'log/cron.log'
 
 
 # set :environment, :development
