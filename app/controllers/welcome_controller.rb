@@ -57,7 +57,7 @@ class WelcomeController < ApplicationController
         	if form_type == "JojLsi"
 
         		wxuser = WxUser.find_by(open_id: open_id)
-        		wxuser.update_attributes(bonus: wxuser.bonus + total_price, member: true)
+        		wxuser.update_attributes(bonus: (wxuser.bonus + total_price.to_i), member: true)
         		wxuser.save
 
         		#向微信后台服务器发送请求，获取该用户的会员卡code属性
@@ -82,7 +82,7 @@ class WelcomeController < ApplicationController
         		uri = URI("https://api.weixin.qq.com/card/membercard/updateuser?access_token=" + "#{access_token_value}")
         		http = Net::HTTP.new(uri.host, uri.port)
         		http.use_ssl = true
-        		data = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{total_price}"}.to_json
+        		data = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser.bonus}".to_i }.to_json
         		header = {'content-type'=>'application/json'}
         		http.post(uri, data, header)
         	else
