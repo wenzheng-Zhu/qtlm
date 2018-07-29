@@ -53,7 +53,7 @@ class WelcomeController < ApplicationController
         else
 
         	#在rails里已经保存过该用户
-        	#判断在微信公众号里是不是会员，如果从金数据那边推送过来的信息里有sum_price,说明该用户有tagid, 是会员，那么更新该用户在rails中的么 member属性为true，并且更新在微信后台里的会员卡积分
+        	#判断在微信公众号里是不是会员，如果从金数据那边推送过来的信息中 form_type的值是"JojLsi",说明该用户有tagid, 是会员，那么更新该用户在rails中的么 member属性为true，并且更新在微信后台里的会员卡积分
         	if form_type == "JojLsi"
 
         		wxuser = WxUser.find_by(open_id: open_id)
@@ -87,7 +87,7 @@ class WelcomeController < ApplicationController
         		http.post(uri, data, header)
         	else
 
-        		#如果没有sum_price,说明这个用户在微信里没有tagid，不是会员。先判断这个用户有没有领会员卡，如果领了，赋予该用户在微信后台的tagid,如果没有，不是会员，不更新积分
+        		#如果form_type不是"JojLsi",说明这个用户在微信里没有tagid，不是会员。先判断这个用户有没有领会员卡，如果领了，赋予该用户在微信后台的tagid,如果没有，不是会员，不更新积分，如果没有领，推送会员卡二维码并且带上会员卡优惠信息
         		uri5 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
         		http5 = Net::HTTP.new(uri5.host, uri5.port)
         		http5.use_ssl = true
@@ -101,6 +101,27 @@ class WelcomeController < ApplicationController
         		  data6 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
         		  header = {'content-type'=>'application/json'}
         		  http6.post(uri6, data6, header)
+                else
+
+
+                    #推送扫码加入会员消息，并带上会员卡会员优惠信息
+            uri6 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
+            http6 = Net::HTTP.new(uri6.host, uri6.port)
+            http6.use_ssl = true
+            data6 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'be a member, having discount!'} }).to_json
+            header = {'content-type'=>'application/json'}
+            http6.post(uri6, data6, header)
+            #推送会卡二维码，扫码加入会员
+            uri7 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
+            http7 = Net::HTTP.new(uri7.host, uri7.port)
+            http7.use_ssl = true
+            data7 = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
+            header = {'content-type'=>'application/json'}
+            http7.post(uri7, data7, header)
+
+
+
+
         		end
         	end
 
