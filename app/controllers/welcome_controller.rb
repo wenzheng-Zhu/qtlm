@@ -17,7 +17,7 @@ class WelcomeController < ApplicationController
 	 		end
 	 	end
 
-
+        cookies[:open_id] = params[:entry][:x_field_weixin_openid]
     	access_token_value = (AccessToken.last)&.value
         form_type = params[:form]
     	open_id = params[:entry][:x_field_weixin_openid]
@@ -144,7 +144,7 @@ class WelcomeController < ApplicationController
         		  http7.post(uri7, data7, header)
                   wxuser_t = WxUser.find_by(open_id: open_id).update_attributes(member: true)
                   wxuser_t.save
-                else
+                 else
 
 
                     #推送扫码加入会员消息，并带上会员卡会员优惠信息
@@ -266,7 +266,7 @@ class WelcomeController < ApplicationController
 
 
          def bar
-            openid = params[:entry][:x_field_weixin_openid]
+            openid = cookies[:open_id]
          end
 end
 
