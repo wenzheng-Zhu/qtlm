@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
 
     skip_before_action :verify_authenticity_token, only: [:shixian] 
 
-    def shixian
+ def shixian
 
     	#判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
         arrwen = []
@@ -17,7 +17,7 @@ class WelcomeController < ApplicationController
 	 		end
 	 	end
 
-        cookies[:open_id] = params[:entry][:x_field_weixin_openid]
+       # cookies[:open_id] = params[:entry][:x_field_weixin_openid]
     	access_token_value = (AccessToken.last)&.value
         form_type = params[:form]
     	open_id = params[:entry][:x_field_weixin_openid]
@@ -27,8 +27,6 @@ class WelcomeController < ApplicationController
     	stuff = params[:entry][:field_1]
         Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
 
-         
- 
 
          #如果在rails里没保存过该用户
         if !(arrwen.include?false)
@@ -74,12 +72,12 @@ class WelcomeController < ApplicationController
                wxuser.update_attributes(bonus: (wxuser.bonus + total_price.to_i))
                wxuser.save
               #推送该会员查看已买商品的链接
-               uri3 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-               http3 = Net::HTTP.new(uri3.host, uri3.port)
-               http3.use_ssl = true
-               data3 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href="http://212.64.11.106/foo?openid="#{open_id}"">查看已购课程</a>" } }).to_json
-               header = {'content-type'=>'application/json'}
-               http3.post(uri3, data3, header)
+               # uri3 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
+               # http3 = Net::HTTP.new(uri3.host, uri3.port)
+               # http3.use_ssl = true
+               # data3 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href="http://212.64.11.106/foo?openid="#{open_id}"">查看已购课程</a>" } }).to_json
+               # header = {'content-type'=>'application/json'}
+               # http3.post(uri3, data3, header)
 
               if wxuser.bonus >= 1
                 wxuser.update_attributes(bonus: (wxuser.bonus - (wxuser.bonus/1)*1))
@@ -126,7 +124,7 @@ class WelcomeController < ApplicationController
 
 
         	
-        	else
+        	  else
 
         		#如果form_type不是"d8LkpV",说明这个用户在微信里没有tagid，不是会员。先判断这个用户有没有领会员卡，如果领了，赋予该用户在微信后台的tagid,如果没有，不是会员，不更新积分，如果没有领，推送会员卡二维码并且带上会员卡优惠信息
         		uri6 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
@@ -265,9 +263,9 @@ class WelcomeController < ApplicationController
 
 
 
-         def bar
-            openid = cookies[:open_id]
-         end
+         # def bar
+         #    openid = cookies[:open_id]
+         # end
 end
 
 
