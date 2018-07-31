@@ -138,106 +138,10 @@ class WelcomeController < ApplicationController
 
         end
 
-
+      end
     
     end
 
 
 
-    # def shixian2
-
-    #     #判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
-    #     arrwen = []
-    #     WxUser.all&.each do |wu|
-    #         if wu.open_id == params[:entry][:x_field_weixin_openid]
-    #             arrwen << false
-    #         else
-    #             arrwen << true
-    #         end
-    #     end
-
-
-    #     access_token_value = (AccessToken.last)&.value
-    #     form_type = params[:form]
-    #     open_id = params[:entry][:x_field_weixin_openid]
-    #     phone = params[:entry][:field_2]
-    #     total_price = params[:entry][:total_price]
-    #     sum_price = params[:entry][:sum_price]
-    #     stuff = params[:entry][:field_1]
-    #     Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
-
-
-
-    #     #如果在rails里没保存过该用户，创建此用户，并且更新此用户的 bonus,接着判断bonus的值是不是大于某一值，若大于某一值，更新bonus,并且发放卡券；若没有大于某一值，bonus不变，不发放卡券。
-
-    #      if !(arrwen.include?false)
-    #         WxUser.create(open_id: open_id, phone: phone,  bonus: total_price.to_i)
-    #         wu_new = WxUser.find_by(open_id: open_id)
-    #         if wu_new.bonus >= 1
-    #             wu_new.update_attributes(bonus: (wu_new.bonus - (wu_new.bonus/1)*1))
-    #             wu_new.save
-    #             (wu_new.bonus/1).times do
-    #         uri = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-    #         http = Net::HTTP.new(uri.host, uri.port)
-    #         http.use_ssl = true
-    #         data = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
-    #         header = {'content-type'=>'application/json'}
-    #         http.post(uri, data, header)
-    #          end
-
-
-    #          #推送该会员查看已买商品的链接
-    #         uri2 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-    #         http2 = Net::HTTP.new(uri2.host, uri2.port)
-    #         http2.use_ssl = true
-    #         data2 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href='http://212.64.11.106/stuff'>查看已购课程</a>" } }).to_json
-    #         header = {'content-type'=>'application/json'}
-    #         http2.post(uri2, data2, header)
-
-
-
-    #         end
-
-                  
-
-    #         #如果在rails里已经有此用户
-    #     else
-    #         wxuser = WxUser.find_by(open_id: open_id)
-    #         wxuser.update_attributes(bonus: (wxuser.bonus + total_price.to_i))
-    #         wxuser.save
-    #         if wxuser.bonus >= 1
-    #             wxuser.update_attributes(bonus: (wxuser.bonus - (wxuser.bonus/1)*1))
-    #             wuuser.save
-    #             (wxuser.bonus/1).times do
-    #                uri = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-    #                http = Net::HTTP.new(uri.host, uri.port)
-    #                http.use_ssl = true
-    #                data = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
-    #                header = {'content-type'=>'application/json'}
-    #                http.post(uri, data, header)
-    #             end
-
-    #         uri2 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-    #         http2 = Net::HTTP.new(uri2.host, uri2.port)
-    #         http2.use_ssl = true
-    #         data2 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href="http://212.64.11.106/foo?openid="#{openid}"">查看已购课程</a>" } }).to_json
-    #         header = {'content-type'=>'application/json'}
-    #         http2.post(uri2, data2, header)
-    #         end
-
-    #      end
-
-         
-
-    # end
-
-
-
-
-         # def bar
-         #    openid = cookies[:open_id]
-         # end
-end
-
-
-
+   
