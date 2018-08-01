@@ -17,6 +17,14 @@ class WelcomeController < ApplicationController
 	 		end
 	 	end
 
+        uri10 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
+                http10 = Net::HTTP.new(uri10.host, uri10.port)
+                http10.use_ssl = true
+                data10 = {"openid" => "#{open_id}", "card_id"=>"pIFqF1cZRAJ_yq471tJwcoa_pw9M"}.to_json
+                header = {'content-type'=>'application/json'}
+                res = http10.post(uri10, data10, header).body.split("\"").uniq
+        user_code = res[12]
+
        # cookies[:open_id] = params[:entry][:x_field_weixin_openid]
     	access_token_value = (AccessToken.last)&.value
         form_type = params[:form]
