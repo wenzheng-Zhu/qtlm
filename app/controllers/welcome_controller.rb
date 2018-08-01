@@ -93,11 +93,18 @@ class WelcomeController < ApplicationController
                  card_given_amounts = wxuser_new.bonus/1
                 wxuser_new.update_attributes(bonus: (wxuser_new.bonus - (wxuser_new.bonus/1)*1))
                 wxuser_new.save
+
+                 uri11 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
+                    http11 = Net::HTTP.new(uri11.host, uri11.port)
+                    http11.use_ssl = true
+                    data11 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"亲爱的会员，根据会员享有的权益，根据您的积分，您将得到#{card_given_amounts}次赠送课程，请扫描以下二维码获取,系统将自动抵扣您的积分，谢谢！：）"} }).to_json
+                    header = {'content-type'=>'application/json'}
+                    http11.post(uri11, data11, header)
                 card_given_amounts.times do
                    uri4 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                    http4 = Net::HTTP.new(uri4.host, uri4.port)
                    http4.use_ssl = true
-                   data4 = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
+                   data4 = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8hnn8j71Josa6bb6F3wZLoE'}}).to_json
                    header = {'content-type'=>'application/json'}
                    http4.post(uri4, data4, header)
                   end  
@@ -107,7 +114,7 @@ class WelcomeController < ApplicationController
                 uri5 = URI("https://api.weixin.qq.com/card/membercard/updateuser?access_token=" + "#{access_token_value}")
                 http5 = Net::HTTP.new(uri5.host, uri5.port)
                 http5.use_ssl = true
-                data5 = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser.bonus}".to_i }.to_json
+                data5 = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser_new.bonus}".to_i }.to_json
                 header = {'content-type'=>'application/json'}
                 http5.post(uri5, data5, header)	
         	else
@@ -134,7 +141,7 @@ class WelcomeController < ApplicationController
                     uri8 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                     http8 = Net::HTTP.new(uri8.host, uri8.port)
                     http8.use_ssl = true
-                    data8 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'be a member, having discount!'} }).to_json
+                    data8 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"扫码免费成为会员，您将获得购买我们的课程的权利，并可享受满1200积分送一次的优惠，快行动吧！"} }).to_json
                     header = {'content-type'=>'application/json'}
                     http8.post(uri8, data8, header)
                    #推送会卡二维码，扫码加入会员
