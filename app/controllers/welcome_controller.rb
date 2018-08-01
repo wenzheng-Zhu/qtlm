@@ -17,14 +17,7 @@ class WelcomeController < ApplicationController
 	 		end
 	 	end
 
-        uri10 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
-                http10 = Net::HTTP.new(uri10.host, uri10.port)
-                http10.use_ssl = true
-                data10 = {"openid" => "#{open_id}", "card_id"=>"pIFqF1cZRAJ_yq471tJwcoa_pw9M"}.to_json
-                header = {'content-type'=>'application/json'}
-                res = http10.post(uri10, data10, header).body.split("\"").uniq
-        user_code = res[12]
-
+       
        # cookies[:open_id] = params[:entry][:x_field_weixin_openid]
     	access_token_value = (AccessToken.last)&.value
         form_type = params[:form]
@@ -34,6 +27,16 @@ class WelcomeController < ApplicationController
     	sum_price = params[:entry][:sum_price]
     	stuff = params[:entry][:field_1]
         Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
+
+
+         uri10 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
+                http10 = Net::HTTP.new(uri10.host, uri10.port)
+                http10.use_ssl = true
+                data10 = {"openid" => "#{open_id}", "card_id"=>"pIFqF1cZRAJ_yq471tJwcoa_pw9M"}.to_json
+                header = {'content-type'=>'application/json'}
+                res = http10.post(uri10, data10, header).body.split("\"").uniq
+        user_code = res[12]
+
 
 
          #如果在rails里没保存过该用户
