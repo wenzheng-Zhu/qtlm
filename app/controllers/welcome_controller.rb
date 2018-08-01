@@ -88,11 +88,12 @@ class WelcomeController < ApplicationController
                # data3 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href="http://212.64.11.106/foo?openid="#{open_id}"">查看已购课程</a>" } }).to_json
                # header = {'content-type'=>'application/json'}
                # http3.post(uri3, data3, header)
-
-               if wxuser.bonus >= 1
-                wxuser.update_attributes(bonus: (wxuser.bonus - (wxuser.bonus/1)*1))
-                wuuser.save
-                (wxuser.bonus/1).times do
+                wxuser_new = WxUser.find_by(open_id: open_id)
+               if wxuser_new.bonus >= 1
+                 card_given_amounts = wxuser_new.bonus/1
+                wxuser_new.update_attributes(bonus: (wxuser_new.bonus - (wxuser_new.bonus/1)*1))
+                wuuser_new.save
+                card_given_amounts.times do
                    uri4 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                    http4 = Net::HTTP.new(uri4.host, uri4.port)
                    http4.use_ssl = true
@@ -125,7 +126,8 @@ class WelcomeController < ApplicationController
         		  data7 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
         		  header = {'content-type'=>'application/json'}
         		  http7.post(uri7, data7, header)
-                  wxuser_t = WxUser.find_by(open_id: open_id).update_attributes(member: true)
+                  wxuser_t = WxUser.find_by(open_id: open_id)
+                  wxuser_t.update_attributes(member: true)
                   wxuser_t.save
                   else
                     #推送扫码加入会员消息，并带上会员卡会员优惠信息
