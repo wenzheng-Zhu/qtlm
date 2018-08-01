@@ -92,7 +92,7 @@ class WelcomeController < ApplicationController
                if wxuser_new.bonus >= 1
                  card_given_amounts = wxuser_new.bonus/1
                 wxuser_new.update_attributes(bonus: (wxuser_new.bonus - (wxuser_new.bonus/1)*1))
-                wuuser_new.save
+                wxuser_new.save
                 card_given_amounts.times do
                    uri4 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                    http4 = Net::HTTP.new(uri4.host, uri4.port)
