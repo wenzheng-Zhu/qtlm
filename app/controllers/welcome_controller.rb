@@ -46,7 +46,7 @@ class WelcomeController < ApplicationController
         	   uri2 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
         	   http2 = Net::HTTP.new(uri2.host, uri2.port)
         	   http2.use_ssl = true
-        	   data2 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'be a member, having discount!'} }).to_json
+        	   data2 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'若喜欢我们的课程，请扫一扫即将发给您的二维码免费领取会员卡后才能下单购买，并且可以享受积分政策，满1200分赠送一次课程的优惠哦！'} }).to_json
         	   header = {'content-type'=>'application/json'}
         	   http2.post(uri2, data2, header)
         	#推送会卡二维码，扫码加入会员
@@ -58,6 +58,18 @@ class WelcomeController < ApplicationController
                http.post(uri, data, header)
             #保存在rails数据库里
         	    WxUser.create(open_id: open_id, phone: phone, member: false, bonus: 0)
+
+
+                #给这个用户tag_id
+
+                uri11 = URI("https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=" + "#{access_token_value}")
+                  http11 = Net::HTTP.new(uri11.host, uri11.port)
+                  http11.use_ssl = true
+                  data11 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
+                  header = {'content-type'=>'application/json'}
+                  http11.post(uri11, data11, header)
+
+                
             
                 # WxUser.create(open_id: open_id, phone: phone, member: true, bonus: total_price.to_i)
                 # wu_new = WxUser.find_by(open_id: open_id)
@@ -76,11 +88,22 @@ class WelcomeController < ApplicationController
             
         else
         	#在rails里已经保存过该用户
-        	#判断在微信公众号里是不是会员，如果从金数据那边推送过来的信息中 form_type的值是"d8LkpV",说明该用户有tagid, 是会员，那么更新该用户在rails中的么 member属性为true，并且更新在微信后台里的会员卡积分
-        	if form_type == "d8LkpV"
+        	#判断在微信公众号里是不是会员，其实就是看有没有领会员卡，如果领了，更新积分，满积分送课程券。如果没有领，推送领卡二维码
+        	# if form_type == "d8LkpV"
+               uri6 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
+                http6 = Net::HTTP.new(uri6.host, uri6.port)
+                http6.use_ssl = true
+                data6 = {"openid" => "#{open_id}", "card_id"=>"pIFqF1cZRAJ_yq471tJwcoa_pw9M"}.to_json
+                header = {'content-type'=>'application/json'}
+                res = http6.post(uri6, data6, header).body.split("\"")
+            if !(res[8] == ":[],")
                wxuser = WxUser.find_by(open_id: open_id)
                wxuser.update_attributes(bonus: (wxuser.bonus + total_price.to_i))
                wxuser.save
+
+                  wxuser_t = WxUser.find_by(open_id: open_id)
+                  wxuser_t.update_attributes(member: true)
+                  wxuser_t.save
               #推送该会员查看已买商品的链接
                # uri3 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                # http3 = Net::HTTP.new(uri3.host, uri3.port)
@@ -108,7 +131,6 @@ class WelcomeController < ApplicationController
                    header = {'content-type'=>'application/json'}
                    http4.post(uri4, data4, header)
                   end  
-                end
 
                 #把bonus推送到微信后台，刷新会员积分
                 uri5 = URI("https://api.weixin.qq.com/card/membercard/updateuser?access_token=" + "#{access_token_value}")
@@ -117,31 +139,15 @@ class WelcomeController < ApplicationController
                 data5 = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser_new.bonus}".to_i }.to_json
                 header = {'content-type'=>'application/json'}
                 http5.post(uri5, data5, header)	
+               end
         	else
 
-        		#如果form_type不是"d8LkpV",说明这个用户在微信里没有tagid，不是会员。先判断这个用户有没有领会员卡，如果领了，赋予该用户在微信后台的tagid,如果没有，不是会员，不更新积分，如果没有领，推送会员卡二维码并且带上会员卡优惠信息
-        		uri6 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
-        		http6 = Net::HTTP.new(uri6.host, uri6.port)
-        		http6.use_ssl = true
-        		data6 = {"openid" => "#{open_id}", "card_id"=>"pIFqF1cZRAJ_yq471tJwcoa_pw9M"}.to_json
-        		header = {'content-type'=>'application/json'}
-        		res = http6.post(uri6, data6, header).body.split("\"")
-        		 if !(res[8] == ":[],")
-        		  uri7 = URI("https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=" + "#{access_token_value}")
-        		  http7 = Net::HTTP.new(uri7.host, uri7.port)
-        		  http7.use_ssl = true
-        		  data7 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
-        		  header = {'content-type'=>'application/json'}
-        		  http7.post(uri7, data7, header)
-                  wxuser_t = WxUser.find_by(open_id: open_id)
-                  wxuser_t.update_attributes(member: true)
-                  wxuser_t.save
-                  else
-                    #推送扫码加入会员消息，并带上会员卡会员优惠信息
+        	    #如果没有领过，推送领会员卡二维码	
+        	    #推送扫码加入会员消息，并带上会员卡会员优惠信息
                     uri8 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                     http8 = Net::HTTP.new(uri8.host, uri8.port)
                     http8.use_ssl = true
-                    data8 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"扫码免费成为会员，您将获得购买我们的课程的权利，并可享受满1200积分送一次的优惠，快行动吧！"} }).to_json
+                    data8 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"请扫一扫即将发给您的二维码免费领取会员卡，凭会员卡才能参加您已购买的凭证；领卡后，您以后消费可积分，且可享受满1200积分送一次的优惠，快行动吧！"} }).to_json
                     header = {'content-type'=>'application/json'}
                     http8.post(uri8, data8, header)
                    #推送会卡二维码，扫码加入会员
@@ -151,20 +157,18 @@ class WelcomeController < ApplicationController
                     data9 = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
                     header = {'content-type'=>'application/json'}
                     http9.post(uri9, data9, header)
-         		  end
-        	end
+                
 
-
-
+         	end
         end
 
-      end
+    end
 
       def huiyuanka
         render plain: "fuck you! 微信！"
       end
     
-    end
+end
 
 
 
