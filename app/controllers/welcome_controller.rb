@@ -159,6 +159,10 @@ class WelcomeController < ApplicationController
         end
 
       end
+
+      def huiyuanka
+        render plain: "fuck you! 微信！"
+      end
     
     end
 
