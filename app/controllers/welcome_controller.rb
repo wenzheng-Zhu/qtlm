@@ -7,7 +7,7 @@ class WelcomeController < ApplicationController
 
  def shixian
 
-        render status: 200
+       
 
     	#判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
         arrwen = []
@@ -163,6 +163,8 @@ class WelcomeController < ApplicationController
 
          	end
         end
+
+         render status: 200
 
     end
 
