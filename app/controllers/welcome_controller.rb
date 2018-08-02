@@ -7,6 +7,8 @@ class WelcomeController < ApplicationController
 
  def shixian
 
+        render status: 200
+
     	#判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
         arrwen = []
     	WxUser.all&.each do |wu|
@@ -164,9 +166,9 @@ class WelcomeController < ApplicationController
 
     end
 
-      def huiyuanka
-        render plain: "fuck you! 微信！"
-      end
+      # def huiyuanka
+      #   render plain: "fuck you! 微信！"
+      # end
     
 end
 
