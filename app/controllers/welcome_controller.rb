@@ -164,7 +164,7 @@ class WelcomeController < ApplicationController
          	end
         end
 
-         render status: 200
+         render json: {status: 200}, status: :ok
 
     end
 
