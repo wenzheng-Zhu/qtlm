@@ -114,9 +114,9 @@ class WelcomeController < ApplicationController
                # header = {'content-type'=>'application/json'}
                # http3.post(uri3, data3, header)
                 wxuser_new = WxUser.find_by(open_id: open_id)
-               if wxuser_new.bonus >= 1
-                 card_given_amounts = wxuser_new.bonus/1
-                wxuser_new.update_attributes(bonus: (wxuser_new.bonus - (wxuser_new.bonus/1)*1))
+               if wxuser_new.bonus >= 2
+                 card_given_amounts = wxuser_new.bonus/2
+                wxuser_new.update_attributes(bonus: (wxuser_new.bonus - (wxuser_new.bonus/2)*2))
                 wxuser_new.save
 
                  uri11 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
