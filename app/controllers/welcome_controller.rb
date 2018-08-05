@@ -142,6 +142,15 @@ class WelcomeController < ApplicationController
                 header = {'content-type'=>'application/json'}
                 http5.post(uri5, data5, header)	
                end
+
+               #推送会员查看购买记录的链接
+               uri12 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
+               http12 = Net::HTTP.new(uri12.host, uri12.port)
+               http12.use_ssl = true
+               data12 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href="http://212.64.11.106/foo?openid="#{open_id}"">查看已购课程</a>" } }).to_json
+               header = {'content-type'=>'application/json'}
+               http12.post(uri12, data12, header)
+
         	else
 
         	    #如果没有领过，推送领会员卡二维码	
@@ -168,9 +177,9 @@ class WelcomeController < ApplicationController
 
     end
 
-      # def huiyuanka
-      #   render plain: "fuck you! 微信！"
-      # end
+      def bar
+        @orders = Order.find_by(open_id: params[:openid])
+      end
     
 end
 
