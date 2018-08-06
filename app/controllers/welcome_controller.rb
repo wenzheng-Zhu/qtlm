@@ -6,38 +6,31 @@ class WelcomeController < ApplicationController
     skip_before_action :verify_authenticity_token, only: [:shixian, :bar] 
 
  def shixian
-
-       
-
     	#判断从金数据那边推送过的open_id在rails后台数据库wxusers里是不是存在
-        arrwen = []
+      arrwen = []
     	WxUser.all&.each do |wu|
 	 		if wu.open_id == params[:entry][:x_field_weixin_openid]
 	 			arrwen << false
 	 		else
 	 			arrwen << true
 	 		end
-	 	end
-
+	  end 
        
-       # cookies[:open_id] = params[:entry][:x_field_weixin_openid]
     	access_token_value = (AccessToken.last)&.value
-        form_type = params[:form]
+      form_type = params[:form]
     	open_id = params[:entry][:x_field_weixin_openid]
     	phone = params[:entry][:field_2]
     	total_price = params[:entry][:total_price]
     	sum_price = params[:entry][:sum_price]
     	stuff = params[:entry][:field_1]
-        Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
-
-
-         uri10 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
+      Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
+                uri10 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
                 http10 = Net::HTTP.new(uri10.host, uri10.port)
                 http10.use_ssl = true
                 data10 = {"openid" => "#{open_id}", "card_id"=>"pIFqF1cZRAJ_yq471tJwcoa_pw9M"}.to_json
                 header = {'content-type'=>'application/json'}
                 res = http10.post(uri10, data10, header).body.split("\"").uniq
-        user_code = res[12]
+      user_code = res[12]
 
 
 
@@ -70,25 +63,7 @@ class WelcomeController < ApplicationController
                   data11 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
                   header = {'content-type'=>'application/json'}
                   http11.post(uri11, data11, header)
-
-                
-            
-                # WxUser.create(open_id: open_id, phone: phone, member: true, bonus: total_price.to_i)
-                # wu_new = WxUser.find_by(open_id: open_id)
-                #  if wu_new.bonus >= 1
-                #    wu_new.update_attributes(bonus: (wu_new.bonus - (wu_new.bonus/1)*1))
-                #    wu_new.save
-                #    (wu_new.bonus/1).times do
-                #      uri3 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-                #      http3 = Net::HTTP.new(uri3.host, uri3.port)
-                #      http3.use_ssl = true
-                #      data3 = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
-                #      header = {'content-type'=>'application/json'}
-                #      http.post(uri3, data3, header)
-                #     end
-                #  end
-            
-        else
+          else
         	#在rails里已经保存过该用户
         	#判断在微信公众号里是不是会员，其实就是看有没有领会员卡，如果领了，更新积分，满积分送课程券。如果没有领，推送领卡二维码
         	# if form_type == "d8LkpV"
@@ -147,11 +122,10 @@ class WelcomeController < ApplicationController
                uri12 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                http12 = Net::HTTP.new(uri12.host, uri12.port)
                http12.use_ssl = true
-               data12 = ({'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'<a href= 'http://212.64.11.106/foo?openid='+ "#{open_id}" >点击查看已购课程</a>' } }).to_json
+               data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'<a href= 'http://212.64.11.106/foo?openid='+ "#{open_id}" >点击查看已购课程</a>' } }.to_json
                header = {'content-type'=>'application/json'}
                http12.post(uri12, data12, header)
-
-        	else
+        	   else
 
         	    #如果没有领过，推送领会员卡二维码	
         	    #推送扫码加入会员消息，并带上会员卡会员优惠信息
@@ -167,10 +141,8 @@ class WelcomeController < ApplicationController
                     http9.use_ssl = true
                     data9 = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
                     header = {'content-type'=>'application/json'}
-                    http9.post(uri9, data9, header)
-                
-
-         	end
+                    http9.post(uri9, data9, header)  
+         	    end
         end
 
          render json: {status: 200}, status: :ok
