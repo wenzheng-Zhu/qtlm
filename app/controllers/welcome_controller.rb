@@ -122,7 +122,7 @@ class WelcomeController < ApplicationController
                uri12 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
                http12 = Net::HTTP.new(uri12.host, uri12.port)
                http12.use_ssl = true
-               data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>'<a href= 'http://212.64.11.106/foo?openid='+ "#{open_id}" >点击查看已购课程</a>' } }.to_json
+               data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href= 'http://212.64.11.106/foo?openid=#{open_id}' >点击查看已购课程</a>" } }.to_json
                header = {'content-type'=>'application/json'}
                http12.post(uri12, data12, header)
         	   else
