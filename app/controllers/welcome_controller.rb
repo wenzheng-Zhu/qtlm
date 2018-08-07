@@ -150,7 +150,7 @@ class WelcomeController < ApplicationController
     end
 
       def bar
-        @orders = Order.find_by(open_id: params[:openid])
+        @orders = Order.where(open_id: params[:openid])
       end
     
 end
