@@ -1,8 +1,7 @@
 <div>
 	  尊敬的会员，您购买的所有课程如下：
 	 <br>
-	<% @orders.each do |od| %>
-         <% arr << (od.stuff.split("\"")[3]) %>
+	<% for i in (0..arr_new.count-1) %>
+	  <%= arr_new[i] %> : <%= arr_elecount[i] %>次<br>
 	<% end %>
-	<%= arr.uniq %>
 </div>
