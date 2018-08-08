@@ -152,6 +152,7 @@ class WelcomeController < ApplicationController
 
       def bar
         @orders = Order.where(open_id: params[:openid])
+        arr = []
       end
     
 end
