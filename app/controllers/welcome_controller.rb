@@ -154,6 +154,7 @@ class WelcomeController < ApplicationController
         @orders = Order.where(open_id: params[:openid])
         arr = []
         arr_elecount = []
+        arr_new = []
 
         @orders.each do |od| 
          arr << (od.stuff.split("\"")[3])
