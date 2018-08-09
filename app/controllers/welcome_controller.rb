@@ -169,7 +169,7 @@ class WelcomeController < ApplicationController
        @arr 
        @arr_new
        @arr_elecount
-       @k = arr_new.count-1
+       @k = @arr_new.count-1
 
       end
     
