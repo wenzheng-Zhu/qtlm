@@ -165,7 +165,9 @@ class WelcomeController < ApplicationController
           arr_elecount << arr.count(ar)
         end
 
-
+       arr 
+       arr_new
+       arr_elecount
 
       end
     
