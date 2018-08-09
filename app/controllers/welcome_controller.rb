@@ -159,6 +159,7 @@ class WelcomeController < ApplicationController
         @orders.each do |od| 
          arr << (od.stuff.split("\"")[3])
          end 
+
         arr_new = arr.uniq.compact
 
         arr_new.each do |ar|
@@ -168,6 +169,7 @@ class WelcomeController < ApplicationController
        arr 
        arr_new
        arr_elecount
+       k = arr_new.count-1
 
       end
     
