@@ -1,7 +1,7 @@
 <div>
 	  尊敬的会员，您购买的所有课程如下：
 	 <br>
-	<% for i in (0..（"#{k}"）.to_i） %>
+	<% for i in (0..@k） %>
 	  <%= arr_new[i] %> : <%= arr_elecount[i] %>次<br>
 	<% end %>
 </div>
