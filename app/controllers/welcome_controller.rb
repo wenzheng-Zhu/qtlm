@@ -152,9 +152,9 @@ class WelcomeController < ApplicationController
 
       def bar
         @orders = Order.where(open_id: params[:openid])
-        arr = []
-        arr_elecount = []
-        arr_new = []
+        @arr = []
+        @arr_elecount = []
+        @arr_new = []
 
         @orders.each do |od| 
          arr << (od.stuff.split("\"")[3])
@@ -166,9 +166,9 @@ class WelcomeController < ApplicationController
           arr_elecount << arr.count(ar)
         end
 
-       arr 
-       arr_new
-       arr_elecount
+       @arr 
+       @arr_new
+       @arr_elecount
        @k = arr_new.count-1
 
       end
