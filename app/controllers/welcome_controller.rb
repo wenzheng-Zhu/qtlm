@@ -157,13 +157,13 @@ class WelcomeController < ApplicationController
         @arr_new = []
 
         @orders.each do |od| 
-         arr << (od.stuff.split("\"")[3])
+         @arr << (od.stuff.split("\"")[3])
          end 
 
-        arr_new = arr.uniq.compact
+        @arr_new = @arr.uniq.compact
 
-        arr_new.each do |ar|
-          arr_elecount << arr.count(ar)
+        @arr_new.each do |ar|
+          @arr_elecount << @arr.count(ar)
         end
 
        @arr 
