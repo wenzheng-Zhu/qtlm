@@ -172,6 +172,11 @@ class WelcomeController < ApplicationController
        @k = @arr_new.count-1
 
       end
+
+
+      def zheng
+        
+      end
     
 end
 
