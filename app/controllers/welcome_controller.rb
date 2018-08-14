@@ -175,8 +175,12 @@ class WelcomeController < ApplicationController
 
 
       def zheng
-        
+
       end
+
+      def wen
+      end
+      
     
 end
 
