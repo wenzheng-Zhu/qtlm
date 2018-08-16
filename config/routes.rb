@@ -7,6 +7,10 @@ Rails.application.routes.draw do
    get '/foo' => 'welcome#bar'
 
    get '/zheng' => 'welcome#zheng'
+
+   
    get '/wen' => 'welcome#wen'
+
+
   root 'home#index'
 end

@@ -128,7 +128,7 @@ class WelcomeController < ApplicationController
                 uri5 = URI("https://api.weixin.qq.com/card/membercard/updateuser?access_token=" + "#{access_token_value}")
                 http5 = Net::HTTP.new(uri5.host, uri5.port)
                 http5.use_ssl = true
-                data5 = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser_new.bonus}".to_i }.to_json
+                data5 = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser_new.bonus}".to_i, 'custom_field_value1' => "#{wxuser_new.rank}" }.to_json
                 header = {'content-type'=>'application/json'}
                 http5.post(uri5, data5, header)	
                end
