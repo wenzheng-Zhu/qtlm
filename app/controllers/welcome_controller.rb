@@ -50,19 +50,19 @@ class WelcomeController < ApplicationController
         	   http.use_ssl = true
         	   data = ({'touser'=>"#{open_id}", 'msgtype'=>'image', 'image'=>{'media_id'=>'RL0eNhKUSH_Y6no5oTlM8lx2EndoR91fHvfGz63cCAQ'}}).to_json
         	   header = {'content-type'=>'application/json'}
-               http.post(uri, data, header)
+             http.post(uri, data, header)
             #保存在rails数据库里
-        	    WxUser.create(open_id: open_id, phone: phone, member: false, bonus: 0)
+        	   WxUser.create(open_id: open_id, phone: phone, member: false, bonus: 0)
 
 
                 #给这个用户tag_id
 
-                  uri11 = URI("https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=" + "#{access_token_value}")
-                  http11 = Net::HTTP.new(uri11.host, uri11.port)
-                  http11.use_ssl = true
-                  data11 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
-                  header = {'content-type'=>'application/json'}
-                  http11.post(uri11, data11, header)
+                  # uri11 = URI("https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=" + "#{access_token_value}")
+                  # http11 = Net::HTTP.new(uri11.host, uri11.port)
+                  # http11.use_ssl = true
+                  # data11 = {"openid_list" => ["#{open_id}"], "tagid" => "100"}.to_json
+                  # header = {'content-type'=>'application/json'}
+                  # http11.post(uri11, data11, header)
           else
         	#在rails里已经保存过该用户
         	#判断在微信公众号里是不是会员，其实就是看有没有领会员卡，如果领了，更新积分，满积分送课程券。如果没有领，推送领卡二维码
@@ -124,14 +124,14 @@ class WelcomeController < ApplicationController
 
 
 
-                #把bonus推送到微信后台，刷新会员积分
+                #把bonus推送到微信后台，刷新会员积分和等级
                 uri5 = URI("https://api.weixin.qq.com/card/membercard/updateuser?access_token=" + "#{access_token_value}")
                 http5 = Net::HTTP.new(uri5.host, uri5.port)
                 http5.use_ssl = true
                 data5 = {'code' => "#{user_code}", 'card_id' => 'pIFqF1cZRAJ_yq471tJwcoa_pw9M', 'bonus' => "#{wxuser_new.bonus}".to_i, 'custom_field_value1' => "#{wxuser_new.rank}" }.to_json
                 header = {'content-type'=>'application/json'}
                 http5.post(uri5, data5, header)	
-               end
+              # end
 
                #推送会员查看购买记录的链接
                uri12 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
@@ -141,7 +141,7 @@ class WelcomeController < ApplicationController
                data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"点击 http://212.64.11.106/foo?openid=#{open_id} 查看已购课程" } }.to_json
                header = {'content-type'=>'application/json'}
                http12.post(uri12, data12, header)
-        	   else
+        	    else
 
         	    #如果没有领过，推送领会员卡二维码	
         	    #推送扫码加入会员消息，并带上会员卡会员优惠信息
@@ -164,6 +164,15 @@ class WelcomeController < ApplicationController
          render json: {status: 200}, status: :ok
 
     end
+
+
+
+
+
+
+
+
+    
 
       def bar
         @orders = Order.where(open_id: params[:openid])
@@ -195,6 +204,8 @@ class WelcomeController < ApplicationController
 
       def wen
       end
+
+
 
     
 end
