@@ -93,7 +93,7 @@ class WelcomeController < ApplicationController
                #查看会员积分，并分等级 1-1200:小萌 1201-5000:萌太 5000+：萌主
                 wxuser_new = WxUser.find_by(open_id: open_id)
                 if wxuser_new.bonus <= 1200
-                  wxuser_new.rank = "小萌"
+                  wxuser_new.rank = "萌宝"
                   wxuser_new.save
                 elsif wxuser_new.bonus > 5000
                   wxuser_new.rank = "萌主"
