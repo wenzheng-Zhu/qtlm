@@ -11,6 +11,6 @@ Rails.application.routes.draw do
    
    get '/wen' => 'welcome#wen'
 
-
+get '/?code', to: 'welcome#get_course'
   root 'home#index'
 end
