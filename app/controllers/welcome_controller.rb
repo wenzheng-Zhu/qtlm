@@ -173,7 +173,7 @@ class WelcomeController < ApplicationController
       http15 = Net::HTTP.new(uri15.host, uri15.port)
       http15.use_ssl = true
       header = {'content-type'=>'application/json'}
-      res = http15.get_response(uri15, header).body.split("\"").uniq
+      res = http15.get_response(uri15).body.split("\"").uniq
       @openid = res[10]
       @orders = Order.where(open_id: @openid)
 
