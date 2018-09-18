@@ -169,12 +169,35 @@ class WelcomeController < ApplicationController
 
 
     def get_course
-      uri15 = URI("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx7eb44ce11b9ce817&secret=fd4e5dc0c362526f12371ab0bb2255d1&code="+"#{params[:code]}"+"&grant_type=authorization_code")
+      uri15 = URI("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx7eb44ce11b9ce817&secret=fd4e5dc0c362526f12371ab0bb2255d1&code=#{params[:code]}&grant_type=authorization_code")
       http15 = Net::HTTP.new(uri15.host, uri15.port)
       http15.use_ssl = true
       header = {'content-type'=>'application/json'}
       res = http15.get(uri15, header)
       @openid = res[:openid]
+      @orders = Order.where(open_id: @openid)
+
+
+
+        @arr = []
+        @arr_elecount = []
+        @arr_new = []
+
+        @orders.each do |od| 
+         @arr << (od.stuff.split("\"")[3])
+         end 
+
+        @arr_new = @arr.uniq.compact
+
+        @arr_new.each do |ar|
+          @arr_elecount << @arr.count(ar)
+        end
+
+       @arr 
+       @arr_new
+       @arr_elecount
+       @k = @arr_new.count-1
+
     end
 
 
