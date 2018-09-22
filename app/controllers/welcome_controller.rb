@@ -134,13 +134,13 @@ class WelcomeController < ApplicationController
               # end
 
                #推送会员查看购买记录的链接
-               uri12 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
-               http12 = Net::HTTP.new(uri12.host, uri12.port)
-               http12.use_ssl = true
+               # uri12 = URI("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + "#{access_token_value}")
+               # http12 = Net::HTTP.new(uri12.host, uri12.port)
+               # http12.use_ssl = true
                # data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"<a href= 'http://212.64.11.106/foo?openid=#{open_id}' >点击查看已购课程</a>" } }.to_json
-               data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"点击 http://212.64.11.106/foo?openid=#{open_id} 查看已购课程" } }.to_json
-               header = {'content-type'=>'application/json'}
-               http12.post(uri12, data12, header)
+               # data12 = {'touser'=>"#{open_id}", 'msgtype'=>'text', 'text'=>{'content'=>"点击 http://212.64.11.106/foo?openid=#{open_id} 查看已购课程" } }.to_json
+               # header = {'content-type'=>'application/json'}
+               # http12.post(uri12, data12, header)
         	    else
 
         	    #如果没有领过，推送领会员卡二维码	
@@ -169,6 +169,7 @@ class WelcomeController < ApplicationController
 
 
     def get_course
+     #授权页面获得openid 
       uri15 = URI("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx7eb44ce11b9ce817&secret=fd4e5dc0c362526f12371ab0bb2255d1&code=#{params[:code]}&grant_type=authorization_code")
       http15 = Net::HTTP.new(uri15.host, uri15.port)
       http15.use_ssl = true
@@ -177,26 +178,42 @@ class WelcomeController < ApplicationController
       @openid = res[10]
       @orders = Order.where(open_id: @openid)
 
-
-
-        @arr = []
-        @arr_elecount = []
-        @arr_new = []
-
-        @orders.each do |od| 
+      @arr = []
+      @orders.each do |od| 
          @arr << (od.stuff.split("\"")[3])
-         end 
+      end 
 
-        @arr_new = @arr.uniq.compact
+      @arr
 
-        @arr_new.each do |ar|
-          @arr_elecount << @arr.count(ar)
-        end
+      # 推送模版消息给用户
+      uri16 = URI("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=#{access_token_value}")
+      http16 = Net::HTTP.new(uri16.host, uri16.port)
+      http16.use_ssl = true
+      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword3'=>{'value'=>"#{@arr.join(';')}"}, 'remarks'=>{'value'=>"可凭此信息入场，请妥善保存此信息。"} }).to_json
+      header = {'content-type'=>'application/json'}
+      http16.post(uri16, data16, header)  
 
-       @arr 
-       @arr_new
-       @arr_elecount
-       @k = @arr_new.count-1
+
+
+       #  @arr=[]
+       
+       #  @arr_elecount = []
+       #  @arr_new = []
+
+       #  @orders.each do |od| 
+       #   @arr << (od.stuff.split("\"")[3])
+       #   end 
+
+       #  @arr_new = @arr.uniq.compact
+
+       #  @arr_new.each do |ar|
+       #    @arr_elecount << @arr.count(ar)
+       #  end
+
+       # @arr 
+       # @arr_new
+       # @arr_elecount
+       # @k = @arr_new.count-1
 
     end
 
