@@ -194,6 +194,8 @@ class WelcomeController < ApplicationController
       header = {'content-type'=>'application/json'}
       http16.post(uri16, data16, header)  
 
+      redirect_to "#"
+
 
 
        #  @arr=[]
