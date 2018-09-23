@@ -190,7 +190,7 @@ class WelcomeController < ApplicationController
       uri16 = URI("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=#{access_token_value}")
       http16 = Net::HTTP.new(uri16.host, uri16.port)
       http16.use_ssl = true
-      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword3'=>{'value'=>"#{@arr.join(';')}"}, 'remarks'=>{'value'=>"可凭此信息日常，请妥善保存此信息。"} } }).to_json
+      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword3'=>{'value'=>"#{@arr.uniq.compact.join(';')}"}, 'remarks'=>{'value'=>"可凭此信息日常，请妥善保存此信息。"} } }).to_json
       header = {'content-type'=>'application/json'}
       http16.post(uri16, data16, header)  
 
