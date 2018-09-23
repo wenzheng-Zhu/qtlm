@@ -170,6 +170,7 @@ class WelcomeController < ApplicationController
 
     def get_course
      #授权页面获得openid 
+      access_token_value = (AccessToken.last)&.value
       uri15 = URI("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx7eb44ce11b9ce817&secret=fd4e5dc0c362526f12371ab0bb2255d1&code=#{params[:code]}&grant_type=authorization_code")
       http15 = Net::HTTP.new(uri15.host, uri15.port)
       http15.use_ssl = true
