@@ -183,20 +183,23 @@ class WelcomeController < ApplicationController
       res = Net::HTTP.get_response(uri15).body.split("\"").uniq
       @openid = res[10]
       @orders = Order.where(open_id: @openid)
-
+      
+      @arr_price = []
       @arr = []
       @orders.each do |od| 
        #  @arr << (od.stuff.split("\"")[3])
        @arr << od.stuff.split("\"").uniq.compact[3] <<  od.stuff.split("\"").uniq.compact[7]
+       @arr_price << od.sum_price
       end 
-
+      
+      @arr_price
       @arr
 
       # 推送模版消息给用户
       uri16 = URI("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=#{access_token_value}")
       http16 = Net::HTTP.new(uri16.host, uri16.port)
       http16.use_ssl = true
-      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword3'=>{'value'=>"#{@arr.uniq.compact.join(';')}"}, 'remarks'=>{'value'=>"可凭此信息日常，请妥善保存此信息。"} } }).to_json
+      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword1'=>{'value'=>"#{rand(1..100)}"},'keyword2'=>{'value'=>"#{@arr_price.sum}"},'keyword3'=>{'value'=>"#{@arr.uniq.compact.join(';')}"},'keyword4'=>{'value'=>'2018-09-01'},'keyword5'=>{'value'=>'520'},'remarks'=>{'value'=>"可凭此信息日常，请妥善保存此信息。"} } }).to_json
       header = {'content-type'=>'application/json'}
       http16.post(uri16, data16, header)  
 
