@@ -22,8 +22,13 @@ class WelcomeController < ApplicationController
     	phone = params[:entry][:field_2]
     	total_price = params[:entry][:total_price]
     	sum_price = params[:entry][:sum_price]
-    	stuff = params[:entry][:field_1]
-      Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuff)
+      stuff = []
+    	params[:entry][:field_1].each do |stf|
+        stuff << stf[:name]
+      end
+
+      stuffs = stuff.join(";")
+      Order.create(open_id: open_id, total_price: total_price, sum_price: sum_price, stuff: stuffs)
                 uri10 = URI("https://api.weixin.qq.com/card/user/getcardlist?access_token=" + "#{access_token_value}")
                 http10 = Net::HTTP.new(uri10.host, uri10.port)
                 http10.use_ssl = true
@@ -181,7 +186,8 @@ class WelcomeController < ApplicationController
 
       @arr = []
       @orders.each do |od| 
-         @arr << (od.stuff.split("\"")[3])
+       #  @arr << (od.stuff.split("\"")[3])
+       @arr << (od.stuff)
       end 
 
       @arr
