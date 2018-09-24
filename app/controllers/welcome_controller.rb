@@ -200,9 +200,9 @@ class WelcomeController < ApplicationController
       header = {'content-type'=>'application/json'}
       http16.post(uri16, data16, header)  
 
-      redirect_to "http://mp.weixin.qq.com/mp/homepage?__biz=MzU4MjI4NjM2OA==&hid=2&sn=a31079a1927b9ea8fba8ea53bdc4c44b&scene=18#wechat_redirect"
+      #redirect_to "http://mp.weixin.qq.com/mp/homepage?__biz=MzU4MjI4NjM2OA==&hid=2&sn=a31079a1927b9ea8fba8ea53bdc4c44b&scene=18#wechat_redirect"
 
-
+      render nothing: true, status: 200
 
        #  @arr=[]
        
