@@ -187,7 +187,7 @@ class WelcomeController < ApplicationController
       @arr = []
       @orders.each do |od| 
        #  @arr << (od.stuff.split("\"")[3])
-       @arr << (od.stuff)
+       @arr << od.stuff.split("\"").uniq.compact[3] <<  od.stuff.split("\"").uniq.compact[7]
       end 
 
       @arr
