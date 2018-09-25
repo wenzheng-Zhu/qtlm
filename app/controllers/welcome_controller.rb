@@ -205,7 +205,8 @@ class WelcomeController < ApplicationController
 
       #redirect_to "http://mp.weixin.qq.com/mp/homepage?__biz=MzU4MjI4NjM2OA==&hid=2&sn=a31079a1927b9ea8fba8ea53bdc4c44b&scene=18#wechat_redirect"
 
-      render nothing: true, status: 200
+      #render nothing: true, status: 200
+      redirect_to "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU4MjI4NjM2OA==&scene=126#wechat_redirect"
 
        #  @arr=[]
        
