@@ -107,6 +107,7 @@ class WelcomeController < ApplicationController
                   wxuser_new.rank = "萌太"
                   wxuser_new.save
                 end
+                #
                # if wxuser_new.bonus >= 2
                #   card_given_amounts = wxuser_new.bonus/2
                #   wxuser_new.update_attributes(bonus: (wxuser_new.bonus - (wxuser_new.bonus/2)*2))
@@ -199,7 +200,7 @@ class WelcomeController < ApplicationController
       uri16 = URI("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=#{access_token_value}")
       http16 = Net::HTTP.new(uri16.host, uri16.port)
       http16.use_ssl = true
-      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword1'=>{'value'=>"#{rand(1..100)}"},'keyword2'=>{'value'=>"#{@arr_price.sum}"},'keyword3'=>{'value'=>"#{@arr.uniq.compact.join(';')}"},'keyword4'=>{'value'=>'2018-09-01'},'keyword5'=>{'value'=>'520'},'remarks'=>{'value'=>"可凭此信息日常，请妥善保存此信息。"} } }).to_json
+      data16 = ({'touser'=>"#{@openid}", 'template_id'=>'Ir6k1JXt22aDeLFZd9XqWsZEpUxeFkwWQX1Q9FSq8rQ', 'data'=>{'first'=>'恭喜您，已成功订购以下电子票','keyword1'=>{'value'=>"#{params[:entry][:trade_no]}"},'keyword2'=>{'value'=>"#{@arr_price.sum}"},'keyword3'=>{'value'=>"#{@arr.compact.join(';')}"},'keyword4'=>{'value'=>'2018-09-01'},'keyword5'=>{'value'=>'520'},'remarks'=>{'value'=>"可凭此信息日常，请妥善保存此信息。"} } }).to_json
       header = {'content-type'=>'application/json'}
       http16.post(uri16, data16, header)  
 
